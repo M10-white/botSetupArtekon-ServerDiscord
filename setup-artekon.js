@@ -1,3 +1,4 @@
+// setup-artekon.js
 const { Client, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
 
@@ -17,8 +18,8 @@ const structure = [
   {
     name: '🎮 GAMING',
     channels: [
-      '🎮・discussions',
-      '🕹・annonces',
+      '🎮・jeux-du-moment',
+      '🕹・vos-sessions',
       '📷・captures-ingame',
       { name: '🎙・vocal-gaming', type: 'GUILD_VOICE' }
     ]
@@ -41,6 +42,16 @@ const structure = [
   }
 ];
 
+const roles = [
+  { name: '🧙 Admin', color: 'Red', permissions: ['Administrator'] },
+  { name: '👮 Modérateur', color: 'Blue', permissions: ['KickMembers', 'BanMembers', 'ManageMessages'] },
+  { name: '💻 Codeur', color: 'Green' },
+  { name: '🎨 Designer', color: 'Purple' },
+  { name: '🕹 Gamer', color: 'Gold' },
+  { name: '🎙 Vocal', color: 'Grey' },
+  { name: '🚀 Membre', color: 'White' }
+];
+
 client.once('ready', async () => {
   console.log(`Connecté en tant que ${client.user.tag}`);
   const guild = client.guilds.cache.first();
@@ -61,7 +72,15 @@ client.once('ready', async () => {
     }
   }
 
-  console.log('Structure ARTEKON créée !');
+  for (const role of roles) {
+    await guild.roles.create({
+      name: role.name,
+      color: role.color,
+      permissions: role.permissions || []
+    });
+  }
+
+  console.log('Structure ARTEKON et rôles créés !');
   client.destroy();
 });
 
